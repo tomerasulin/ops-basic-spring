@@ -43,8 +43,7 @@ jobs:
       - name: Deploy to GCP
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.GCP_INSTANCE_PUBLIC_IP }}
-          port: 3391
+          host: 104.198.169.134:3391
           key: ${{ secrets.SSH_KEY }} # store the SSH password as a secret in the repository
           script: |
             cd /home/tomermailg/ops-basic-spring
