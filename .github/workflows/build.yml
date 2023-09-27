@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
@@ -41,10 +41,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ env.APP_VERSION }}
       - name: Deploy to GCP
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.GCP_INSTANCE_PUBLIC_IP }}
-          username: tomermailg
+          port: 3391
           key: ${{ secrets.SSH_KEY }} # store the SSH password as a secret in the repository
           script: |
             cd /home/tomermailg/ops-basic-spring
