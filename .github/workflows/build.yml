@@ -44,7 +44,8 @@ jobs:
       - name: Deploy to GCP
         uses: appleboy/ssh-action@v0.0.3
         with:
-          host: 10.128.115.220:3391
+          host: 10.128.115.220
+          port: 3391
           username: asulin
           key: ${{ secrets.SSH_KEY }}
           script: |
