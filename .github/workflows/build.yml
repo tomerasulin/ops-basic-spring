@@ -45,7 +45,7 @@ jobs:
         uses: appleboy/ssh-action@v0.0.3
         with:
           host: 34.170.3.141
-          port: 80
+          port: 3391
           username: asulin
           key: ${{ secrets.SSH_KEY }}
           script: |
