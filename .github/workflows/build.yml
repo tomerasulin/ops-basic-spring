@@ -7,6 +7,7 @@ on:
 
 env:
   APP_VERSION: v1.0.${{ github.run_number }}
+  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
 jobs:
   build:
@@ -41,11 +42,15 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ env.APP_VERSION }}
       - name: Deploy to GCP
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v0.0.3
         with:
-          host: 10.128.15.220:3391
-          key: ${{ secrets.SSH_KEY }} # store the SSH password as a secret in the repository
+          host: 10.128.115.220
+          username: asulin
+          key: ${{ secrets.SSH_KEY }}
           script: |
+           # Log in to GCP using the service account key
+            echo "$GCP_SA_KEY" > gcp-key.json
+            gcloud auth activate-service-account --key-file=gcp-key.json
             cd /home/tomermailg/ops-basic-spring
             sudo /usr/local/bin/docker-compose  down || true
             sed -i 's/image: ${{ secrets.DOCKERHUB_USERNAME }}\/backend:.*/image: ${{ secrets.DOCKERHUB_USERNAME }}\/backend:v1.0.${{ github.run_number }}/g' /home/tomermailg/ops-basic-spring/docker-compose.yml
